@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+strands-agents[ollama]
+strands-agents-tools
+python-dotenv
