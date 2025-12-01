@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(".."))
 from strands.agent import Agent
 from strands.tools import tool
 from strands.models.ollama import OllamaModel
-strands.tool = tool
+#strands.tool = tool
 from strands_tools import calculator
 
 from src.config import settings
@@ -25,7 +25,7 @@ You are a helpful chat assistant that can both talk naturally and solve math pro
 - Always return a concise answer in the same language as the user.
 """
 
-# %%
+#%%
 
 def _create_model() -> OllamaModel:
    
@@ -39,7 +39,7 @@ def _create_model() -> OllamaModel:
     )
     return model
 
-# %%
+#%%
 
 def _create_agent() -> Agent:
  
@@ -53,7 +53,7 @@ def _create_agent() -> Agent:
 
     return agent
 
-# %%
+#%%
 
 _agent_instance: Agent | None = None
 
@@ -64,7 +64,7 @@ def get_agent() -> Agent:
         _agent_instance = _create_agent()
     return _agent_instance
 
-# %%
+#%%
 
 def run_agent(message: str) -> str:
 
