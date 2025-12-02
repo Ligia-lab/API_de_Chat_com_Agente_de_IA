@@ -208,6 +208,126 @@ Documentação:
 Executar o script de teste:
 
     python teste.py
+---
+## 🧪 6. Testes e Validação
+
+Esta fase garante que o agente, a API e a integração com o Ollama estão funcionando corretamente.
+
+---
+
+### 6.1 Testando o Agente diretamente (teste.py)
+
+Execute:
+
+    python teste.py
+
+Resultados esperados:
+
+- Pergunta matemática:
+    Input:
+        Quanto é 1234 * 5678?
+    Output esperado:
+        7006652
+
+- Raiz quadrada:
+    Input:
+        Qual a raiz quadrada de 144?
+    Output esperado:
+        12
+
+- Pergunta geral:
+    Input:
+        Quem foi Ada Lovelace?
+    Output esperado:
+        Uma explicação descritiva.
+
+---
+
+### 6.2 Testando a API via Swagger
+
+Acesse:
+
+    http://localhost:8000/docs
+
+Teste o endpoint POST /chat:
+
+Entrada:
+
+    {
+      "message": "Qual a raiz quadrada de 144?"
+    }
+
+Saída esperada:
+
+    {
+      "response": "12"
+    }
+
+Teste pergunta geral:
+
+Entrada:
+
+    {
+      "message": "Explique o que é machine learning."
+    }
+
+---
+
+### 6.3 Testando via cURL
+
+Teste de cálculo:
+
+    curl -X POST http://localhost:8000/chat \
+    -H "Content-Type: application/json" \
+    -d '{"message": "Quanto é 55 * 99?"}'
+
+Teste pergunta geral:
+
+    curl -X POST http://localhost:8000/chat \
+    -H "Content-Type: application/json" \
+    -d '{"message": "Quem inventou o avião?"}'
+
+---
+
+### 6.4 Verificando o Ollama
+
+Listar modelos:
+
+    ollama list
+
+Testar diretamente o modelo:
+
+    ollama run llama3-groq-tool-use "Quanto é 120 * 88?"
+
+---
+
+### 6.5 Casos de teste recomendados (tool-use)
+
+    Quanto é 8 ** 3?
+    Raiz quadrada de 256.
+    Calcule 55 * 45.
+    Quanto é 0.55 * 1200?
+
+---
+
+### 6.6 Casos de teste recomendados (conhecimento geral)
+
+    Quem foi Albert Einstein?
+    Explique redes neurais.
+    O que é Python?
+    Explique o conceito de API.
+
+---
+
+### 6.7 Resultado da Fase 6
+
+- O agente resolve cálculos corretamente.  
+- O agente responde perguntas gerais de forma coerente.  
+- O endpoint POST /chat funciona via Swagger e cURL.  
+- O modelo llama3-groq-tool-use está operando corretamente no Ollama.  
+- Toda a aplicação está validada e funcional.
+
+
 
 ---
 
@@ -218,7 +338,8 @@ Executar o script de teste:
 - ✔️ Fase 3 — Dependências  
 - ✔️ Fase 4 — API FastAPI  
 - ✔️ Fase 5 — Integração com Ollama
+- ✔️ Fase 6 — Testes e Validação
 
 
-
+---
 
