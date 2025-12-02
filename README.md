@@ -340,6 +340,27 @@ Testar diretamente o modelo:
 - ✔️ Fase 5 — Integração com Ollama
 - ✔️ Fase 6 — Testes e Validação
 
+---
+
+## 🏁 9. Conclusão do Projeto
+
+Este projeto implementa uma API de Chat totalmente funcional integrada a um Agente de IA, utilizando FastAPI, Strands Agents e o modelo local `llama3-groq-tool-use` via Ollama. Ele atende a todos os requisitos do case, incluindo comunicação com o agente, uso de LLM local, suporte a tool-use para cálculos matemáticos e respostas de conhecimento geral.
+
+Ao longo das fases, o projeto foi estruturado de forma modular, configurável e extensível. O uso de variáveis de ambiente, separação entre API e agente, além da integração limpa com o Ollama, garantem que a aplicação seja fácil de manter e expandir. A API foi testada por meio do Swagger, cURL e do script `teste.py`, demonstrando funcionamento consistente em todos os cenários.
+
+A solução se destaca por:
+
+- Arquitetura clara e organizada  
+- Uso do Strands Agents SDK  
+- Modelo local com tool-use nativo  
+- Estrutura em FastAPI  
+- Testes de validação  
+- Facilidade de configuração e execução  
+
+Com isso, o projeto está concluído, validado e pronto para avaliação. Todas as fases foram implementadas com foco em clareza, organização e aderência às boas práticas recomendadas para APIs e agentes de IA.
+
+
+
 
 ---
 
