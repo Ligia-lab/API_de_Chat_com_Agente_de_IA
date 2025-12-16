@@ -336,7 +336,7 @@ Testar diretamente o modelo:
 
 ---
 
-## 🏁 9. Conclusão do Projeto
+## 🏁 Conclusão do Projeto
 
 Este projeto implementa uma API de Chat totalmente funcional integrada a um Agente de IA, utilizando FastAPI, Strands Agents e o modelo local `llama3-groq-tool-use` via Ollama. Ele atende a todos os requisitos do case, incluindo comunicação com o agente, uso de LLM local, suporte a tool-use para cálculos matemáticos e respostas de conhecimento geral.
 
