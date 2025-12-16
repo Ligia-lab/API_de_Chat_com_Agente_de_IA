@@ -25,6 +25,26 @@ from src.agent import run_agent
 
 
 def main():
+    """
+    Função principal de execução para testes locais do agente de IA.
+
+    Esta função é utilizada como um script de validação e demonstração do funcionamento
+    do agente fora do contexto da API. Ela exibe as configurações carregadas a partir das
+    variáveis de ambiente e executa uma série de perguntas de exemplo para verificar o
+    comportamento do agente em diferentes cenários.
+
+    O fluxo da função consiste em:
+    1. Exibir no terminal as configurações principais do LLM e do ambiente da aplicação.
+    2. Definir um conjunto de perguntas que incluem tanto cálculos matemáticos quanto
+       perguntas de conhecimento geral.
+    3. Iterar sobre as perguntas, enviando cada uma ao agente por meio da função
+       `run_agent()`.
+    4. Exibir a resposta gerada pelo agente ou, em caso de erro, imprimir o traceback
+       para facilitar o diagnóstico durante o desenvolvimento.
+
+    Essa função é especialmente útil para testes rápidos, debug e validação do uso de
+    ferramentas pelo agente, sem a necessidade de subir o servidor FastAPI.
+    """
     print("=== Settings carregados ===")
     print("LLM_PROVIDER:", settings.LLM_PROVIDER)
     print("LLM_MODEL:", settings.LLM_MODEL)

@@ -203,12 +203,6 @@ Documentação:
 
 ---
 
-## 🧪 Testando o Agente
-
-Executar o script de teste:
-
-    python teste.py
----
 ## 🧪 6. Testes e Validação
 
 Esta fase garante que o agente, a API e a integração com o Ollama estão funcionando corretamente.
