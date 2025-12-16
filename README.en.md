@@ -1,163 +1,222 @@
-# Chat API with AI Agent
+# 📚 Chat API with AI Agent  
+### ⭐ FastAPI + Strands Agents + Ollama (Model with Native Tool Use)
 
-A simple **chat API** built with **FastAPI** and an **AI agent** that uses the **Strands Agents SDK** and **Ollama** as the language model.  
-This project demonstrates how to build a structured LLM-driven API with tool usage, clean architecture, and environment-based configuration.
+This project implements a **chat API** that uses the **Strands Agents SDK**, integrated with **Ollama**, to create an AI agent capable of:
 
----
+- Answering general knowledge questions  
+- Detecting when mathematical tools should be used  
+- Automatically performing calculations using an **LLM with native tool-use** (`llama3-groq-tool-use`)  
+- Conversing naturally with the user  
 
-## 🚀 Features
-
-- Conversational AI API using FastAPI
-- AI Agent with tool support (calculator for math operations)
-- Local LLM inference using Ollama
-- Clean and extensible architecture
-- Typed request and response schemas with Pydantic
-- Local testing without running the API server
+This project follows the best practices required in the case, with proper organization, environment variable usage, and a clear separation between the API and the AI agent.
 
 ---
 
-## 📋 Project Structure
-
+# 🗂️ Project Structure
+```
 API_de_Chat_com_Agente_de_IA/
-- src/
-  - agent.py        → AI agent creation and execution logic
-  - config.py       → Environment-based application settings
-  - schemas.py      → API request and response models
-  - main.py         → FastAPI application and endpoints
-- teste.py          → Local test script for the agent
-- README.md
-- requirements.txt
+├── src/
+│   ├── __init__.py
+│   ├── agent.py
+│   ├── config.py
+│   ├── main.py
+│   ├── schemas.py
+│
+├── teste.py
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+---
+
+## 🔧 1. Environment Configuration
+
+The project uses a `.env` file at the root to define its settings.
+
+Create your `.env` file:
+
+    cp .env.example .env
+
+Default content:
+
+    LLM_PROVIDER=ollama
+    LLM_MODEL=llama3-groq-tool-use
+
+    LLM_TEMPERATURE=0.2
+    LLM_MAX_TOKENS=1024
+
+    OLLAMA_HOST=http://localhost:11434
+
+    APP_ENV=local
+
+- `LLM_MODEL` points to the model that already has native tool-use  
+- `OLLAMA_HOST` is the local Ollama server  
+- `APP_ENV` indicates the runtime environment  
 
 ---
 
-## ⚙️ Configuration
+## 📦 2. Dependencies
 
-Create a `.env` file in the project root with the following variables:
+The `requirements.txt` file contains:
 
-LLM_PROVIDER=ollama  
-LLM_MODEL=llama3  
-LLM_TEMPERATURE=0.2  
-LLM_MAX_TOKENS=1024  
-APP_ENV=local  
-OLLAMA_HOST=http://localhost:11434  
-
-These variables define the LLM provider and model, inference parameters,
-the application environment, and the Ollama server address.
-
----
-
-## 🧠 AI Agent Design
-
-The core logic lives in `agent.py`. The agent:
-
-1. Initializes the LLM through a dedicated model factory function  
-2. Registers tools (such as a calculator for math operations)  
-3. Uses a system prompt to control behavior and tool usage  
-4. Executes requests through a single interface function  
-
-A lazy-loaded singleton pattern ensures the agent is created only once,
-improving performance and resource usage.
-
----
-
-## 📡 API Endpoints
-
-### POST /chat
-
-Send a user message to the AI agent.
-
-Request example:
-{ "message": "What is machine learning?" }
-
-Response example:
-{ "response": "Machine learning is a field of AI that allows systems to learn from data." }
-
----
-
-### GET /health
-
-Health-check endpoint.
-
-Response:
-{ "status": "ok" }
-
----
-
-## 🧪 Local Testing (Without API)
-
-You can test the agent directly using the provided script:
-
-python teste.py
-
-This script prints the loaded configuration values and sends multiple
-example questions to the agent, validating both tool usage and general
-conversational responses.
-
----
-
-## 🛠️ Installation & Running
-
-Clone the repository:
-
-git clone https://github.com/Ligia-lab/API_de_Chat_com_Agente_de_IA.git  
-cd API_de_Chat_com_Agente_de_IA  
-
-Create and activate a virtual environment:
-
-python3 -m venv venv  
-source venv/bin/activate  
+    fastapi
+    uvicorn[standard]
+    strands-agents
+    strands-agents-tools
+    python-dotenv
 
 Install dependencies:
 
-pip install -r requirements.txt  
-
-Start the API server:
-
-uvicorn src.main:app --reload  
+    pip install -r requirements.txt
 
 ---
 
-## 📖 API Documentation
+## 🤖 3. Agent Implementation (Strands Agents + Ollama)
 
-Once running, access Swagger UI at:
+The `src/agent.py` file contains the full implementation of the AI agent responsible for interpreting the user message and generating the final response using Strands Agents and Ollama.
 
-http://localhost:8000/docs
+### ✔️ Ollama Model Loading
+
+The agent uses `OllamaModel`, configured through variables defined in the `.env` file:
+
+- `LLM_MODEL`
+- `LLM_TEMPERATURE`
+- `LLM_MAX_TOKENS`
+- `OLLAMA_HOST`
+
+This allows the model behavior to be adjusted without changing the code.
+
+### ✔️ Native Tool Use
+
+The project uses the **`llama3-groq-tool-use`** model, which already includes native support for tool use:
+
+- Mathematical calculations  
+- Structured reasoning  
+- Automatic tool selection  
+- Intelligent command interpretation  
+
+No tools were manually implemented in Python.  
+The model itself decides when to use a tool or respond directly.
+
+### ✔️ System Prompt
+
+The agent includes a *system prompt* that guides the model’s behavior:
+
+- When to use tool-use  
+- How to answer general questions  
+- Language consistency  
+- Maintaining coherence  
+
+### ✔️ run_agent(message)
+
+This function:
+
+1. Receives the user message  
+2. Sends it to the Strands agent  
+3. Processes the request via Ollama  
+4. Returns the final response as a string  
+
+It centralizes agent execution and simplifies reuse.
 
 ---
 
-## 🔍 Example Use Cases
+## 🌐 4. FastAPI API (src/main.py)
 
-- Math questions (tool invocation):  
-  How much is 1234 * 5678?
+### POST /chat
 
-- General knowledge questions:  
-  Who was Ada Lovelace?
+Input:
 
-- Technical explanations:  
-  Explain machine learning in simple terms.
+    {
+      "message": "What is 1234 * 5678?"
+    }
 
----
+Output:
 
-## 📈 Project Highlights
+    {
+      "response": "7006652"
+    }
 
-- Demonstrates LLM agent architecture
-- Shows practical tool usage with AI agents
-- Environment-driven configuration
-- Local LLM inference without external APIs
-- Interview-ready example of AI system design
+### GET /health
 
----
+Response:
 
-## 🚧 Future Improvements
-
-- Add conversation memory
-- Support more tools (search, database, APIs)
-- Authentication and rate limiting
-- Logging and monitoring
-- Docker and production deployment
+    {
+      "status": "ok"
+    }
 
 ---
 
-## 📜 License
+## 🧠 5. Ollama Integration
 
-This project is open-source and free to use for learning and experimentation.
+### Installation
+
+    curl -fsSL https://ollama.com/install.sh | sh
+
+Verify:
+
+    ollama -v
+
+### Download Model
+
+    ollama pull llama3-groq-tool-use
+
+### Start Server
+
+    ollama serve
+
+---
+
+## ▶️ How to Run
+
+Start API:
+
+    uvicorn src.main:app --reload
+
+Docs:
+
+    http://127.0.0.1:8000/docs
+
+---
+
+## 🧪 6. Tests and Validation
+
+### Agent Test
+
+    python teste.py
+
+### Swagger
+
+    http://localhost:8000/docs
+
+### cURL Example
+
+    curl -X POST http://localhost:8000/chat \
+    -H "Content-Type: application/json" \
+    -d '{"message": "What is 55 * 99?"}'
+
+---
+
+## 🎉 Completed Phases
+
+- ✔️ Phase 1 — Structure  
+- ✔️ Phase 2 — Configuration  
+- ✔️ Phase 3 — Dependencies  
+- ✔️ Phase 4 — FastAPI API  
+- ✔️ Phase 5 — Ollama Integration  
+- ✔️ Phase 6 — Tests and Validation  
+
+---
+
+## 🏁 Project Conclusion
+
+This project delivers a fully functional Chat API integrated with an AI Agent using FastAPI, Strands Agents, and the local `llama3-groq-tool-use` model via Ollama.
+
+It demonstrates:
+
+- Clean architecture  
+- Proper use of environment variables  
+- Native tool-use with LLMs  
+- API validation via multiple methods  
+
+The solution is complete, validated, and ready for technical evaluation.
